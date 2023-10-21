@@ -1,0 +1,33 @@
+#include <Ultrasonic.h> //Carrega a biblioteca Ultrasonic
+#include <LiquidCrystal.h> //Carrega a biblioteca LCD
+#define PINO_TRIGGER 13
+#define PINO_ECHO 10
+Ultrasonic ultrasonic(PINO_TRIGGER, PINO_ECHO);//Inicializa o sensor ultrasonico
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);//Define os pinos que serão ligados ao LCD
+void setup() {
+Serial.begin(9600);
+lcd.begin(16,2);
+lcd.clear();
+}
+void loop() {
+float cmMsec, inMsec;
+long microsec = ultrasonic.timing(); //Le os dados do sensor, com o tempo de retorno do sinal
+cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM);//Calcula a distancia em centimetros
+inMsec = ultrasonic.convert(microsec, Ultrasonic::IN);//Calcula a distancia em polegadas
+lcd.setCursor(0,0);
+lcd.print("Cent.: ");
+lcd.print(" ");
+lcd.setCursor(7,0);
+lcd.print(cmMsec);
+Serial.print("Cent: ");
+Serial.print(cmMsec);
+lcd.setCursor(0,1);
+lcd.print("Pol. : ");
+83
+lcd.print(" ");
+lcd.setCursor(7,1);
+lcd.print(inMsec);
+Serial.print(", Pol. : ");
+Serial.println(inMsec);
+delay(1000);
+}
